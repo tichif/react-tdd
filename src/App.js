@@ -1,9 +1,7 @@
+import SignUpPage from './pages/SignUpPage';
+
 function App() {
-  return (
-    <div>
-      <h1>Hello world</h1>
-    </div>
-  );
+  return <SignUpPage />;
 }
 
 export default App;
