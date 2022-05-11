@@ -95,7 +95,17 @@ class SignUpPage extends Component {
                 onClick={this.clickHandler}
                 className='btn btn-primary'
               >
-                Sign Up
+                {loading ? (
+                  <>
+                    <span
+                      className='spinner-border spinner-border-sm'
+                      role='status'
+                    ></span>
+                    Loading...
+                  </>
+                ) : (
+                  'Sign Up'
+                )}
               </button>
             </div>
           </div>

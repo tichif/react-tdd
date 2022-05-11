@@ -145,5 +145,29 @@ describe('Sign Up page', () => {
 
       expect(counter).toBe(1);
     });
+
+    it('display Spinner when the form is submitting', async () => {
+      // create a fake server
+
+      const server = setupServer(
+        rest.post('/api/1.0/users', (req, res, ctx) => {
+          return res(ctx.status(200));
+        })
+      );
+      server.listen();
+
+      setup();
+
+      // use queryByRole() instead of getByRole() when the element is not in the document yet
+      let spinner = screen.queryByRole('status');
+
+      expect(spinner).not.toBeInTheDocument();
+
+      userEvent.click(button);
+
+      spinner = screen.getByRole('status');
+
+      expect(spinner).toBeInTheDocument();
+    });
   });
 });
