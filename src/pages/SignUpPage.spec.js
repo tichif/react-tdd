@@ -75,15 +75,25 @@ describe('Sign Up page', () => {
   });
 
   describe('Interactions', () => {
-    it('enables the button when password and confirmPassword has the same value', () => {
+    let button;
+
+    const setup = () => {
       render(<SignUpPage />);
       const inputPassword = screen.getByLabelText('Password');
       const inputConfirmPassword = screen.getByLabelText('Confirm Password');
+      const inputEmail = screen.getByLabelText('Email');
+      const inputUsername = screen.getByLabelText('Username');
 
       userEvent.type(inputPassword, 'Pass@@1234');
       userEvent.type(inputConfirmPassword, 'Pass@@1234');
+      userEvent.type(inputEmail, 'test@test.com');
+      userEvent.type(inputUsername, 'Tichif');
 
-      const button = screen.queryByRole('button', { name: 'Sign Up' });
+      button = screen.queryByRole('button', { name: 'Sign Up' });
+    };
+
+    it('enables the button when password and confirmPassword has the same value', () => {
+      setup();
       expect(button).toBeEnabled();
     });
 
@@ -98,18 +108,7 @@ describe('Sign Up page', () => {
       );
       server.listen();
 
-      render(<SignUpPage />);
-      const inputPassword = screen.getByLabelText('Password');
-      const inputConfirmPassword = screen.getByLabelText('Confirm Password');
-      const inputEmail = screen.getByLabelText('Email');
-      const inputUsername = screen.getByLabelText('Username');
-
-      userEvent.type(inputPassword, 'Pass@@1234');
-      userEvent.type(inputConfirmPassword, 'Pass@@1234');
-      userEvent.type(inputEmail, 'test@test.com');
-      userEvent.type(inputUsername, 'Tichif');
-
-      const button = screen.queryByRole('button', { name: 'Sign Up' });
+      setup();
 
       // Simulate a http request
 
@@ -135,18 +134,7 @@ describe('Sign Up page', () => {
       );
       server.listen();
 
-      render(<SignUpPage />);
-      const inputPassword = screen.getByLabelText('Password');
-      const inputConfirmPassword = screen.getByLabelText('Confirm Password');
-      const inputEmail = screen.getByLabelText('Email');
-      const inputUsername = screen.getByLabelText('Username');
-
-      userEvent.type(inputPassword, 'Pass@@1234');
-      userEvent.type(inputConfirmPassword, 'Pass@@1234');
-      userEvent.type(inputEmail, 'test@test.com');
-      userEvent.type(inputUsername, 'Tichif');
-
-      const button = screen.queryByRole('button', { name: 'Sign Up' });
+      setup();
 
       // Simulate a http request
 
