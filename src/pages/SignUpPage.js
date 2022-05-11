@@ -9,31 +9,10 @@ class SignUpPage extends Component {
     confirmPassword: '',
   };
 
-  onChangePassword = (e) => {
-    const value = e.target.value;
+  onChangeHandler = (e) => {
+    const { value, id } = e.target;
     this.setState({
-      password: value,
-    });
-  };
-
-  onChangeConfirmPassword = (e) => {
-    const value = e.target.value;
-    this.setState({
-      confirmPassword: value,
-    });
-  };
-
-  onChangeEmail = (e) => {
-    const value = e.target.value;
-    this.setState({
-      email: value,
-    });
-  };
-
-  onChangeUsername = (e) => {
-    const value = e.target.value;
-    this.setState({
-      username: value,
+      [id]: value,
     });
   };
 
@@ -58,28 +37,28 @@ class SignUpPage extends Component {
           <input
             placeholder='Username'
             id='username'
-            onChange={this.onChangeUsername}
+            onChange={this.onChangeHandler}
           />
           <label htmlFor='email'>Email</label>
           <input
             type='email'
             placeholder='Email'
             id='email'
-            onChange={this.onChangeEmail}
+            onChange={this.onChangeHandler}
           />
           <label htmlFor='password'>Password</label>
           <input
             type='password'
             placeholder='Password'
             id='password'
-            onChange={this.onChangePassword}
+            onChange={this.onChangeHandler}
           />
           <label htmlFor='confirmPassword'>Confirm Password</label>
           <input
             type='password'
             placeholder='Confirm Password'
             id='confirmPassword'
-            onChange={this.onChangeConfirmPassword}
+            onChange={this.onChangeHandler}
           />
           <button disabled={disabled} onClick={this.clickHandler}>
             Sign Up
