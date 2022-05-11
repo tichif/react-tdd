@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import SignUpPage from './SignUpPage';
 
@@ -68,6 +69,20 @@ describe('Sign Up page', () => {
       render(<SignUpPage />);
       const button = screen.queryByRole('button', { name: 'Sign Up' });
       expect(button).toBeDisabled();
+    });
+  });
+
+  describe('Interactions', () => {
+    it('enables the button when password and confirmPassword has the same value', () => {
+      render(<SignUpPage />);
+      const inputPassword = screen.getByLabelText('Password');
+      const inputConfirmPassword = screen.getByLabelText('Confirm Password');
+
+      userEvent.type(inputPassword, 'Pass@@1234');
+      userEvent.type(inputConfirmPassword, 'Pass@@1234');
+
+      const button = screen.queryByRole('button', { name: 'Sign Up' });
+      expect(button).toBeEnabled();
     });
   });
 });
