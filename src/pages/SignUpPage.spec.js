@@ -123,5 +123,39 @@ describe('Sign Up page', () => {
         password: 'Pass@@1234',
       });
     });
+
+    it('disables button when the form is submitting', async () => {
+      // create a fake server
+      let counter = 0;
+      const server = setupServer(
+        rest.post('/api/1.0/users', (req, res, ctx) => {
+          counter++;
+          return res(ctx.status(200));
+        })
+      );
+      server.listen();
+
+      render(<SignUpPage />);
+      const inputPassword = screen.getByLabelText('Password');
+      const inputConfirmPassword = screen.getByLabelText('Confirm Password');
+      const inputEmail = screen.getByLabelText('Email');
+      const inputUsername = screen.getByLabelText('Username');
+
+      userEvent.type(inputPassword, 'Pass@@1234');
+      userEvent.type(inputConfirmPassword, 'Pass@@1234');
+      userEvent.type(inputEmail, 'test@test.com');
+      userEvent.type(inputUsername, 'Tichif');
+
+      const button = screen.queryByRole('button', { name: 'Sign Up' });
+
+      // Simulate a http request
+
+      userEvent.click(button);
+      userEvent.click(button);
+
+      await new Promise((resolve) => setTimeout(resolve, 500));
+
+      expect(counter).toBe(1);
+    });
   });
 });

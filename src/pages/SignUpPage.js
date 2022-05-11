@@ -7,6 +7,7 @@ class SignUpPage extends Component {
     email: '',
     password: '',
     confirmPassword: '',
+    loading: false,
   };
 
   onChangeHandler = (e) => {
@@ -19,6 +20,7 @@ class SignUpPage extends Component {
   clickHandler = (e) => {
     e.preventDefault();
     const { username, email, password } = this.state;
+    this.setState({ loading: true });
     axios.post('/api/1.0/users', {
       username,
       email,
@@ -28,7 +30,7 @@ class SignUpPage extends Component {
 
   render() {
     let disabled = true;
-    const { password, confirmPassword } = this.state;
+    const { password, confirmPassword, loading } = this.state;
     if (password && confirmPassword) {
       disabled = password !== confirmPassword;
     }
@@ -89,7 +91,7 @@ class SignUpPage extends Component {
             </div>
             <div className='text-center'>
               <button
-                disabled={disabled}
+                disabled={disabled || loading}
                 onClick={this.clickHandler}
                 className='btn btn-primary'
               >
