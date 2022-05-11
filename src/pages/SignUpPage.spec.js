@@ -1,6 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import axios from 'axios';
+import { setupServer } from 'msw/node';
+import { rest } from 'msw';
 
 import SignUpPage from './SignUpPage';
 
@@ -86,7 +88,17 @@ describe('Sign Up page', () => {
       expect(button).toBeEnabled();
     });
 
-    it('send infos to backend after clicking button', () => {
+    it('send infos to backend after clicking button', async () => {
+      // create a fake server
+      let requestBody;
+      const server = setupServer(
+        rest.post('/api/1.0/users', (req, res, ctx) => {
+          requestBody = req.body;
+          return res(ctx.status(200));
+        })
+      );
+      server.listen();
+
       render(<SignUpPage />);
       const inputPassword = screen.getByLabelText('Password');
       const inputConfirmPassword = screen.getByLabelText('Confirm Password');
@@ -101,16 +113,12 @@ describe('Sign Up page', () => {
       const button = screen.queryByRole('button', { name: 'Sign Up' });
 
       // Simulate a http request
-      // mock
-      const mockFn = jest.fn();
-      axios.post = mockFn;
 
       userEvent.click(button);
 
-      const firstCall = mockFn.mock.calls[0];
-      const body = firstCall[1];
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
-      expect(body).toEqual({
+      expect(requestBody).toEqual({
         username: 'Tichif',
         email: 'test@test.com',
         password: 'Pass@@1234',
