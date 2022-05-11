@@ -19,7 +19,11 @@ class SignUpPage extends Component {
   clickHandler = (e) => {
     e.preventDefault();
     const { username, email, password } = this.state;
-    axios.post('/api/1.0/users', { username, email, password });
+    axios.post('/api/1.0/users', {
+      username,
+      email,
+      password,
+    });
   };
 
   render() {
