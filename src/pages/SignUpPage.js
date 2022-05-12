@@ -22,12 +22,16 @@ class SignUpPage extends Component {
     e.preventDefault();
     const { username, email, password } = this.state;
     this.setState({ loading: true });
-    await axios.post('/api/1.0/users', {
-      username,
-      email,
-      password,
-    });
-    this.setState({ success: true });
+    try {
+      await axios.post('/api/1.0/users', {
+        username,
+        email,
+        password,
+      });
+      this.setState({ success: true });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   render() {

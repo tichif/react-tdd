@@ -80,6 +80,25 @@ describe('Sign Up page', () => {
   });
 
   describe('Interactions', () => {
+    // create a fake server
+    let requestBody;
+    let counter = 0;
+
+    const server = setupServer(
+      rest.post('/api/1.0/users', (req, res, ctx) => {
+        counter++;
+        requestBody = req.body;
+        return res(ctx.status(200));
+      })
+    );
+
+    // lifecycle test functions
+    beforeEach(() => (counter = 0));
+
+    beforeAll(() => server.listen());
+
+    afterAll(() => server.close());
+
     let button;
 
     const setup = () => {
@@ -103,16 +122,6 @@ describe('Sign Up page', () => {
     });
 
     it('send infos to backend after clicking button', async () => {
-      // create a fake server
-      let requestBody;
-      const server = setupServer(
-        rest.post('/api/1.0/users', (req, res, ctx) => {
-          requestBody = req.body;
-          return res(ctx.status(200));
-        })
-      );
-      server.listen();
-
       setup();
 
       // Simulate a http request
@@ -131,16 +140,6 @@ describe('Sign Up page', () => {
     });
 
     it('disables button when the form is submitting', async () => {
-      // create a fake server
-      let counter = 0;
-      const server = setupServer(
-        rest.post('/api/1.0/users', (req, res, ctx) => {
-          counter++;
-          return res(ctx.status(200));
-        })
-      );
-      server.listen();
-
       setup();
 
       // Simulate a http request
@@ -156,15 +155,6 @@ describe('Sign Up page', () => {
     });
 
     it('display Spinner when the form is submitting', async () => {
-      // create a fake server
-
-      const server = setupServer(
-        rest.post('/api/1.0/users', (req, res, ctx) => {
-          return res(ctx.status(200));
-        })
-      );
-      server.listen();
-
       setup();
 
       // use queryByRole() instead of getByRole() when the element is not in the document yet
@@ -183,15 +173,6 @@ describe('Sign Up page', () => {
     });
 
     it('displays account creation notification after successful sign up', async () => {
-      // create a fake server
-
-      const server = setupServer(
-        rest.post('/api/1.0/users', (req, res, ctx) => {
-          return res(ctx.status(200));
-        })
-      );
-      server.listen();
-
       setup();
 
       const message = 'Please check your e-mail to activate your account';
@@ -205,14 +186,6 @@ describe('Sign Up page', () => {
     });
 
     it('hides sign up form after successful sign up request', async () => {
-      // create a fake server
-      const server = setupServer(
-        rest.post('/api/1.0/users', (req, res, ctx) => {
-          return res(ctx.status(200));
-        })
-      );
-      server.listen();
-
       setup();
 
       const form = screen.getByTestId('form-sign-up');
